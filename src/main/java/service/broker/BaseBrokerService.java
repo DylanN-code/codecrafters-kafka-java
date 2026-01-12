@@ -1,11 +1,11 @@
 package service.broker;
 
 import constants.Constant;
-import dto.Field;
-import dto.Offset;
-import dto.request.RequestHeaderV2;
-import dto.request.body.BaseRequestBody;
-import dto.response.body.BaseResponseBody;
+import domain.Field;
+import domain.Offset;
+import domain.request.RequestHeaderV2;
+import domain.request.body.BaseRequestBody;
+import domain.response.body.BaseResponseBody;
 import enums.FieldType;
 import utils.*;
 
@@ -67,7 +67,7 @@ public abstract class BaseBrokerService<T extends BaseRequestBody, R extends Bas
         }
 
         short requestApiKeyVal = ByteUtil.convertStreamToShort(requestApiKey.getData());
-        BaseBrokerService handler = BrokerUtil.getInstance(requestApiKeyVal);
+        BrokerService handler = BrokerUtil.getInstance(requestApiKeyVal);
         BaseRequestBody requestBody = handler.parseRequestBody(data, offset);
         BaseResponseBody responseBody = handler.convertToResponseBody(requestBody);
         return handler.flattenResponse(responseBody, requestHeader);

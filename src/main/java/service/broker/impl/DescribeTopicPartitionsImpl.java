@@ -1,13 +1,13 @@
 package service.broker.impl;
 
 import constants.Constant;
-import dto.Field;
-import dto.Offset;
-import dto.metadata.record.PartitionValue;
-import dto.metadata.record.TopicValue;
-import dto.request.RequestHeaderV2;
-import dto.request.body.DescribeTopicPartitionsRequestBodyV0;
-import dto.response.body.DescribeTopicPartitionsResponseBodyV0;
+import domain.Field;
+import domain.Offset;
+import domain.metadata.record.PartitionValue;
+import domain.metadata.record.TopicValue;
+import domain.request.RequestHeaderV2;
+import domain.request.body.DescribeTopicPartitionsRequestBodyV0;
+import domain.response.body.DescribeTopicPartitionsResponseBodyV0;
 import enums.ApiKey;
 import enums.FieldType;
 import service.broker.BaseBrokerService;

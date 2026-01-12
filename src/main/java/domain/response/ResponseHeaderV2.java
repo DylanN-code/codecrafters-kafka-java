@@ -1,6 +1,6 @@
-package dto.response;
+package domain.response;
 
-import dto.Field;
+import domain.Field;
 
 public class ResponseHeaderV2 {
     private Field correlationId;

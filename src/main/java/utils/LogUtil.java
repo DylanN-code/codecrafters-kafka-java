@@ -1,10 +1,10 @@
 package utils;
 
-import dto.LogContext;
-import dto.metadata.Batch;
-import dto.metadata.Log;
-import dto.metadata.Record;
-import dto.metadata.Value;
+import domain.LogContext;
+import domain.metadata.Batch;
+import domain.metadata.Log;
+import domain.metadata.Record;
+import domain.metadata.Value;
 import enums.FieldType;
 import enums.ValueType;
 import service.log.BaseLogValueService;

@@ -1,4 +1,4 @@
-package dto.response.body;
+package domain.response.body;
 
 public class BaseResponseBody {
 }

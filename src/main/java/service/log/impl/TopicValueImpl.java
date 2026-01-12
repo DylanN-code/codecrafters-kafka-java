@@ -1,11 +1,12 @@
 package service.log.impl;
 
 import constants.Constant;
-import dto.Field;
-import dto.metadata.record.TopicValue;
+import domain.Field;
+import domain.metadata.record.TopicValue;
 import enums.FieldType;
 import enums.ValueType;
 import service.log.BaseLogValueService;
+import service.log.LogValueService;
 import utils.BrokerUtil;
 import utils.ByteUtil;
 
@@ -39,7 +40,7 @@ public class TopicValueImpl extends BaseLogValueService<TopicValue> {
     }
 
     @Override
-    public void register() {
-        BaseLogValueService.STORE.put(ValueType.TOPIC, this);
+    public void registerHandler() {
+        LogValueService.STORE.put(ValueType.TOPIC, this);
     }
 }

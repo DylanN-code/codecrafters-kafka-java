@@ -1,4 +1,4 @@
-package dto.metadata;
+package domain.metadata;
 
 import java.util.LinkedList;
 

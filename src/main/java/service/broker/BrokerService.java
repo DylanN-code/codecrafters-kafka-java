@@ -1,10 +1,10 @@
 package service.broker;
 
-import dto.Field;
-import dto.Offset;
-import dto.request.RequestHeaderV2;
-import dto.request.body.BaseRequestBody;
-import dto.response.body.BaseResponseBody;
+import domain.Field;
+import domain.Offset;
+import domain.request.RequestHeaderV2;
+import domain.request.body.BaseRequestBody;
+import domain.response.body.BaseResponseBody;
 import enums.ApiKey;
 
 import java.util.HashMap;
@@ -12,7 +12,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 public interface BrokerService<T extends BaseRequestBody, R extends BaseResponseBody> {
-    Map<ApiKey, BaseBrokerService<?, ?>> STORE = new HashMap<>();
+    Map<ApiKey, BrokerService<?, ?>> STORE = new HashMap<>();
 
     /**
      * register a handler to local map

@@ -1,6 +1,6 @@
-package dto.response.body;
+package domain.response.body;
 
-import dto.Field;
+import domain.Field;
 
 import java.util.List;
 

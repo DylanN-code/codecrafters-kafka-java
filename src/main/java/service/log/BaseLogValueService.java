@@ -1,10 +1,10 @@
 package service.log;
 
-import dto.Field;
-import dto.LogContext;
-import dto.metadata.Value;
-import dto.metadata.record.PartitionValue;
-import dto.metadata.record.TopicValue;
+import domain.Field;
+import domain.LogContext;
+import domain.metadata.Value;
+import domain.metadata.record.PartitionValue;
+import domain.metadata.record.TopicValue;
 import enums.FieldType;
 import enums.ValueType;
 import utils.BrokerUtil;
@@ -17,7 +17,6 @@ import java.util.*;
 public abstract class BaseLogValueService<T extends Value> implements LogValueService<T> {
     public static final Map<Field, TopicValue> METADATA_CLUSTER_TOPIC_VALUE_MAP = new HashMap<>();
     public static final Map<Field, PartitionValue> METADATA_CLUSTER_PARTITION_VALUE_MAP = new HashMap<>();
-    protected static final Map<ValueType, BaseLogValueService> STORE = new HashMap<>();
 
     private static LinkedList<Field> fillPreCommonValues(ByteArrayInputStream is) throws IOException {
         LinkedList<Field> preFields = new LinkedList<>();
@@ -33,7 +32,7 @@ public abstract class BaseLogValueService<T extends Value> implements LogValueSe
         return postFields;
     }
 
-    private static BaseLogValueService getLogValueServiceHandler(Field type) {
+    private static LogValueService getLogValueServiceHandler(Field type) {
         byte b = ByteUtil.convertStreamToByte(type.getData());
         ValueType valueType = ValueType.ofType(b);
         return STORE.get(valueType);
@@ -49,7 +48,7 @@ public abstract class BaseLogValueService<T extends Value> implements LogValueSe
         LinkedList<Field> preFields = fillPreCommonValues(is);
 
         // select valueHandler
-        BaseLogValueService handler = getLogValueServiceHandler(preFields.get(1));
+        LogValueService handler = getLogValueServiceHandler(preFields.get(1));
         if (Objects.isNull(handler)) {
             throw new RuntimeException("not found handler to load cluster metadata value");
         }

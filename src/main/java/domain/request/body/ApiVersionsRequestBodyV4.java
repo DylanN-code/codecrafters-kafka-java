@@ -1,6 +1,6 @@
-package dto.request.body;
+package domain.request.body;
 
-import dto.Field;
+import domain.Field;
 
 public class ApiVersionsRequestBodyV4 extends BaseRequestBody {
     private Field clientIdLength;

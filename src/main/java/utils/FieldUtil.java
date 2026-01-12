@@ -1,7 +1,7 @@
 package utils;
 
 import constants.Constant;
-import dto.Field;
+import domain.Field;
 import enums.ErrorCode;
 import enums.FieldType;
 

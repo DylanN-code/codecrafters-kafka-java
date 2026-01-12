@@ -1,7 +1,7 @@
-package dto.response.body;
+package domain.response.body;
 
-import dto.Field;
-import dto.metadata.Batch;
+import domain.Field;
+import domain.metadata.Batch;
 
 import java.util.List;
 

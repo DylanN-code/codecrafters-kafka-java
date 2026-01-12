@@ -1,8 +1,9 @@
-package dto.metadata.record;
+package domain.metadata.record;
 
-import dto.Field;
-import dto.metadata.Value;
+import domain.Field;
+import domain.metadata.Value;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.LinkedList;
 
@@ -23,6 +24,7 @@ import java.util.LinkedList;
  */
 
 public class PartitionValue extends Value implements Serializable {
+    @Serial
     private static final long serialVersionUID = 1920980239L;
     private Field recordId;
     private Field partitionId;

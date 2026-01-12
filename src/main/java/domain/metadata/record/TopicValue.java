@@ -1,8 +1,9 @@
-package dto.metadata.record;
+package domain.metadata.record;
 
-import dto.Field;
-import dto.metadata.Value;
+import domain.Field;
+import domain.metadata.Value;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -12,6 +13,7 @@ import java.io.Serializable;
  */
 
 public class TopicValue extends Value implements Serializable {
+    @Serial
     private static final long serialVersionUID = 31292730292L;
     private Field nameLength;
     private Field topicName;

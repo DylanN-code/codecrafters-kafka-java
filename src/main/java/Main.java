@@ -22,9 +22,9 @@ public class Main {
         new DescribeTopicPartitionsImpl().registerHandler();
         new ApiVersionsImpl().registerHandler();
         new FetchImpl().registerHandler();
-        new FeatureLevelValueImpl().register();
-        new TopicValueImpl().register();
-        new PartitionValueImpl().register();
+        new FeatureLevelValueImpl().registerHandler();
+        new TopicValueImpl().registerHandler();
+        new PartitionValueImpl().registerHandler();
         FileUtil.loadConfigs();
         FileUtil.loadClusterMetadataLog();
         try {

@@ -1,7 +1,10 @@
-package dto.metadata.record;
+package domain.metadata.record;
 
-import dto.Field;
-import dto.metadata.Value;
+import domain.Field;
+import domain.metadata.Value;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * - Name length
@@ -9,7 +12,8 @@ import dto.metadata.Value;
  * - Feature Level
  */
 
-public class FeatureLevelRecord extends Value {
+public class FeatureLevelRecord extends Value implements Serializable {
+    @Serial
     private static final long serialVersionUID = 10947049379L;
     private Field nameLength;
     private Field name;

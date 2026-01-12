@@ -1,6 +1,6 @@
 package utils;
 
-import dto.Offset;
+import domain.Offset;
 import enums.FieldType;
 
 import java.io.*;

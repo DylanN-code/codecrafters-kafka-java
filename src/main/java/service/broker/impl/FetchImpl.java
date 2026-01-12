@@ -1,15 +1,15 @@
 package service.broker.impl;
 
 import constants.Constant;
-import dto.Field;
-import dto.Offset;
-import dto.metadata.Batch;
-import dto.metadata.Log;
-import dto.metadata.Record;
-import dto.metadata.record.TopicValue;
-import dto.request.RequestHeaderV2;
-import dto.request.body.FetchRequestBodyV16;
-import dto.response.body.FetchResponseBodyV16;
+import domain.Field;
+import domain.Offset;
+import domain.metadata.Batch;
+import domain.metadata.Log;
+import domain.metadata.Record;
+import domain.metadata.record.TopicValue;
+import domain.request.RequestHeaderV2;
+import domain.request.body.FetchRequestBodyV16;
+import domain.response.body.FetchResponseBodyV16;
 import enums.ApiKey;
 import enums.FieldType;
 import service.broker.BaseBrokerService;

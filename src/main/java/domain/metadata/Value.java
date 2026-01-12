@@ -1,6 +1,9 @@
-package dto.metadata;
+package domain.metadata;
 
-import dto.Field;
+import domain.Field;
+
+import java.io.Serial;
+import java.io.Serializable;
 
 /**
  * Value (Topic CompactRecord)
@@ -10,7 +13,8 @@ import dto.Field;
  * - Tagged Fields Count
  */
 
-public class Value {
+public class Value implements Serializable {
+    @Serial
     private static final long serialVersionUID = 13097439202L;
     private Field frameVersion;
     private Field type;

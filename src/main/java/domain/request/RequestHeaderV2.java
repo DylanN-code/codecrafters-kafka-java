@@ -1,6 +1,6 @@
-package dto.request;
+package domain.request;
 
-import dto.Field;
+import domain.Field;
 
 public class RequestHeaderV2 {
     private Field requestApiKey;

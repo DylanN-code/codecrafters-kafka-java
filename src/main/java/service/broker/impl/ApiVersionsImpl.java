@@ -1,10 +1,10 @@
 package service.broker.impl;
 
-import dto.Field;
-import dto.Offset;
-import dto.request.RequestHeaderV2;
-import dto.request.body.ApiVersionsRequestBodyV4;
-import dto.response.body.ApiVersionsResponseBodyV4;
+import domain.Field;
+import domain.Offset;
+import domain.request.RequestHeaderV2;
+import domain.request.body.ApiVersionsRequestBodyV4;
+import domain.response.body.ApiVersionsResponseBodyV4;
 import enums.ApiKey;
 import enums.FieldType;
 import service.broker.BaseBrokerService;

@@ -1,8 +1,8 @@
 package utils;
 
 import constants.Constant;
-import dto.LogContext;
-import dto.metadata.Log;
+import domain.LogContext;
+import domain.metadata.Log;
 import enums.ValueType;
 
 import java.io.IOException;

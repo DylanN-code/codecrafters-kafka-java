@@ -1,6 +1,6 @@
-package dto.metadata;
+package domain.metadata;
 
-import dto.Field;
+import domain.Field;
 
 /**
  * CompactRecord #1

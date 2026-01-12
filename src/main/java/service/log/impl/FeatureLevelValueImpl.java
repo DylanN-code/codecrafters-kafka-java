@@ -1,9 +1,10 @@
 package service.log.impl;
 
-import dto.metadata.record.FeatureLevelRecord;
+import domain.metadata.record.FeatureLevelRecord;
 import enums.FieldType;
 import enums.ValueType;
 import service.log.BaseLogValueService;
+import service.log.LogValueService;
 import utils.BrokerUtil;
 import utils.ByteUtil;
 
@@ -33,7 +34,7 @@ public class FeatureLevelValueImpl extends BaseLogValueService<FeatureLevelRecor
     }
 
     @Override
-    public void register() {
-        BaseLogValueService.STORE.put(ValueType.FEATURE_LEVEL, this);
+    public void registerHandler() {
+        LogValueService.STORE.put(ValueType.FEATURE_LEVEL, this);
     }
 }

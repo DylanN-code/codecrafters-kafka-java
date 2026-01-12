@@ -1,11 +1,12 @@
 package service.log.impl;
 
 import constants.Constant;
-import dto.Field;
-import dto.metadata.record.PartitionValue;
+import domain.Field;
+import domain.metadata.record.PartitionValue;
 import enums.FieldType;
 import enums.ValueType;
 import service.log.BaseLogValueService;
+import service.log.LogValueService;
 import utils.BrokerUtil;
 import utils.ByteUtil;
 import utils.FieldUtil;
@@ -83,7 +84,7 @@ public class PartitionValueImpl extends BaseLogValueService<PartitionValue> {
     }
 
     @Override
-    public void register() {
-        BaseLogValueService.STORE.put(ValueType.PARTITION, this);
+    public void registerHandler() {
+        LogValueService.STORE.put(ValueType.PARTITION, this);
     }
 }

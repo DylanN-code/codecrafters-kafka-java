@@ -1,10 +1,9 @@
 package utils;
 
-import dto.Field;
-import dto.Offset;
+import domain.Field;
+import domain.Offset;
 import enums.ApiKey;
 import enums.FieldType;
-import service.broker.BaseBrokerService;
 import service.broker.BrokerService;
 
 import java.io.ByteArrayInputStream;
@@ -61,12 +60,12 @@ public class BrokerUtil {
         return output;
     }
 
-    public static BaseBrokerService getInstance(Short key) {
+    public static BrokerService getInstance(Short key) {
         ApiKey apiKey = ApiKey.fromKey(key);
         if (Objects.isNull(apiKey)) {
             throw new RuntimeException("Invalid API KEY");
         }
-        BaseBrokerService<?, ?> handler = BrokerService.STORE.getOrDefault(apiKey, null);
+        BrokerService<?, ?> handler = BrokerService.STORE.getOrDefault(apiKey, null);
         if (Objects.isNull(handler)) {
             throw new RuntimeException("API not registered yet");
         }
