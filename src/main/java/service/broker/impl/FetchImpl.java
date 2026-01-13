@@ -168,8 +168,10 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
                 partitionItem.setBatchRecordLength(FieldUtil.getDefaultFetchResponseRecordLength());
                 partitionItem.setBatchRecordList(new ArrayList<>());
             } else {
-                int batchRecordLength = Byte.MAX_VALUE < log.getTotalByteRead() ? Byte.MAX_VALUE : log.getTotalByteRead();
-                partitionItem.setBatchRecordLength(BrokerUtil.wrapField(ByteUtil.convertByteToStream((byte) batchRecordLength), FieldType.BYTE));
+                byte[] unsignedVarIntBytes = ByteUtil.encodeUnsignedVarInt(log.getTotalByteRead() + 1);
+                FieldType unsignedVarIntFieldType = FieldType.UNSIGNED_VARINT;
+                unsignedVarIntFieldType.setByteSize(unsignedVarIntBytes.length);
+                partitionItem.setBatchRecordLength(BrokerUtil.wrapField(unsignedVarIntBytes, unsignedVarIntFieldType));
                 partitionItem.setBatchRecordList(log.getBatches());
             }
         } else {

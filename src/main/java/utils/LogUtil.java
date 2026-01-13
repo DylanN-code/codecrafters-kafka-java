@@ -25,7 +25,7 @@ public class LogUtil {
         String filePath = logContext.getFilePath();
         File file = new File(filePath);
         if (!file.exists()) {
-            System.out.println("failed to load cluster metadata log due to file not found");
+            System.out.println("failed to load due to file not found, logContext=" + logContext);
             return null;
         }
         FileInputStream fileIS = new FileInputStream(file);

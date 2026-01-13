@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.time.Duration;
 import java.util.LinkedList;
+import java.util.Objects;
 
 public abstract class BaseBrokerService<T extends BaseRequestBody, R extends BaseResponseBody> implements BrokerService<T, R> {
 
@@ -21,6 +22,9 @@ public abstract class BaseBrokerService<T extends BaseRequestBody, R extends Bas
         try {
             while (!clientSocket.isClosed()) {
                 LinkedList<Field> fieldLinkedList = getFieldLinkedList(clientSocket);
+                if (Objects.isNull(fieldLinkedList)) {
+                    continue;
+                }
                 BrokerUtil.handle(clientSocket, fieldLinkedList);
             }
             Thread.sleep(Duration.ofMillis(Constant.GRACE_PERIOD_BETWEEN_REQUEST_HANDLING));
@@ -39,6 +43,9 @@ public abstract class BaseBrokerService<T extends BaseRequestBody, R extends Bas
         InputStream is = clientSocket.getInputStream();
         byte[] messageSizeArr = is.readNBytes(FieldType.INTEGER.getByteSize());
         int messageSize = ByteUtil.convertStreamToInt(messageSizeArr);
+        if (messageSize == 0) {
+            return null;
+        }
         byte[] data = is.readNBytes(messageSize);
 
         Offset offset = new Offset();

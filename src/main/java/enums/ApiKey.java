@@ -3,7 +3,7 @@ package enums;
 import java.util.Objects;
 
 public enum ApiKey {
-    PRODUCE("Produce", Short.valueOf("0"), Short.valueOf("0"), Short.valueOf("0")),
+    PRODUCE("Produce", Short.valueOf("0"), Short.valueOf("0"), Short.valueOf("11")),
     FETCH("Fetch", Short.valueOf("1"), Short.valueOf("0"), Short.valueOf("16")),
     LIST_OFFSETS("ListOffsets", Short.valueOf("2"), Short.valueOf("0"), Short.valueOf("0")),
     METADATA("Metadata", Short.valueOf("3"), Short.valueOf("0"), Short.valueOf("0")),

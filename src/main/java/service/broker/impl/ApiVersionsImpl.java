@@ -20,7 +20,8 @@ public class ApiVersionsImpl extends BaseBrokerService<ApiVersionsRequestBodyV4,
     private static final List<ApiKey> SUPPORTED_APIS = List.of(
             ApiKey.API_VERSIONS,
             ApiKey.DESCRIBE_TOPIC_PARTITIONS,
-            ApiKey.FETCH
+            ApiKey.FETCH,
+            ApiKey.PRODUCE
     );
 
     @Override

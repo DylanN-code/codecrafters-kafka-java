@@ -6,9 +6,10 @@ public enum FieldType {
     SHORT(2),
     BYTE(1),
     STRING(-1),
-    COMPACT_RECORD(-1);
+    COMPACT_RECORD(-1),
+    UNSIGNED_VARINT(-1);
 
-    private final Integer byteSize;
+    private Integer byteSize;
 
     FieldType(Integer byteSize) {
         this.byteSize = byteSize;
@@ -16,5 +17,9 @@ public enum FieldType {
 
     public Integer getByteSize() {
         return byteSize;
+    }
+
+    public void setByteSize(Integer byteSize) {
+        this.byteSize = byteSize;
     }
 }
