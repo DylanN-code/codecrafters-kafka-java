@@ -2,6 +2,7 @@ import service.broker.BaseBrokerService;
 import service.broker.impl.ApiVersionsImpl;
 import service.broker.impl.DescribeTopicPartitionsImpl;
 import service.broker.impl.FetchImpl;
+import service.broker.impl.ProduceImpl;
 import service.log.impl.FeatureLevelValueImpl;
 import service.log.impl.PartitionValueImpl;
 import service.log.impl.TopicValueImpl;
@@ -25,6 +26,7 @@ public class Main {
         new FeatureLevelValueImpl().registerHandler();
         new TopicValueImpl().registerHandler();
         new PartitionValueImpl().registerHandler();
+        new ProduceImpl().registerHandler();
         FileUtil.loadConfigs();
         FileUtil.loadClusterMetadataLog();
         try {
