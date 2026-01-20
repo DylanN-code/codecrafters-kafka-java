@@ -57,6 +57,31 @@ public class FieldUtil {
         return BrokerUtil.wrapField(errorCodeStream, FieldType.SHORT);
     }
 
+    public static Field getErrorPartitionItemBaseOffset() {
+        byte[] errorPartitionItemBaseOffsetStream = ByteUtil.convertLongToStream(Constant.ERROR_PARTITION_ITEM_BASE_OFFSET);
+        return BrokerUtil.wrapField(errorPartitionItemBaseOffsetStream, FieldType.BIG_INTEGER);
+    }
+
+    public static Field getErrorPartitionItemLogAppendTime() {
+        byte[] errorPartitionItemLogAppendTimeStream = ByteUtil.convertLongToStream(Constant.ERROR_PARTITION_ITEM_LOG_APPEND_TIME);
+        return BrokerUtil.wrapField(errorPartitionItemLogAppendTimeStream, FieldType.BIG_INTEGER);
+    }
+
+    public static Field getErrorPartitionItemLogStartOffset() {
+        byte[] errorPartitionItemLogStartOffsetStream = ByteUtil.convertLongToStream(Constant.ERROR_PARTITION_ITEM_LOG_START_OFFSET);
+        return BrokerUtil.wrapField(errorPartitionItemLogStartOffsetStream, FieldType.BIG_INTEGER);
+    }
+
+    public static Field getErrorPartitionArrayLength() {
+        byte[] errorPartitionArrayLengthStream = ByteUtil.convertByteToStream(Constant.ERROR_PARTITION_ARRAY_LENGTH);
+        return BrokerUtil.wrapField(errorPartitionArrayLengthStream, FieldType.BYTE);
+    }
+
+    public static Field getErrorPartitionMessage() {
+        byte[] errorPartitionMessageStream = ByteUtil.convertByteToStream(Constant.ERROR_PARTITION_MESSAGE);
+        return BrokerUtil.wrapField(errorPartitionMessageStream, FieldType.BYTE);
+    }
+
     public static Field getRecordId(byte[] partitionIdStream, byte[] topicIdStream) {
         int partitionIdStreamLength = partitionIdStream.length;
         int topicIdStreamLength = topicIdStream.length;

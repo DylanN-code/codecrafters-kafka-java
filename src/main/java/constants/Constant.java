@@ -27,4 +27,9 @@ public class Constant {
     public static final String COMBINED_LOG_FOLDER_DEFAULT_PATH = "combined.log.folder.path";
     public static final String CLUSTER_METADATA_LOG_FOLDER_NAME = "__cluster_metadata-0";
     public static final String FIRST_LOG_FILE_NAME = "00000000000000000000.log";
+    public static final Long ERROR_PARTITION_ITEM_BASE_OFFSET = -1L;
+    public static final Long ERROR_PARTITION_ITEM_LOG_APPEND_TIME = -1L;
+    public static final Long ERROR_PARTITION_ITEM_LOG_START_OFFSET = -1L;
+    public static final Byte ERROR_PARTITION_ARRAY_LENGTH = 1;
+    public static final Byte ERROR_PARTITION_MESSAGE = 0;
 }

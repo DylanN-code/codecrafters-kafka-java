@@ -2,15 +2,13 @@ package domain.response.body;
 
 import domain.Field;
 
-import java.util.LinkedList;
-
 public class ProduceResponseV11 extends BaseResponseBody {
 
     public static class Response {
         private Field topicNameLength;
         private Field topicName;
         private Field partitionArrayLength;
-        private LinkedList<PartitionItem> partitionArray;
+        private PartitionItem[] partitionArray;
         private Field tagBuffer;
 
         public Field getTopicNameLength() {
@@ -37,11 +35,11 @@ public class ProduceResponseV11 extends BaseResponseBody {
             this.partitionArrayLength = partitionArrayLength;
         }
 
-        public LinkedList<PartitionItem> getPartitionArray() {
+        public PartitionItem[] getPartitionArray() {
             return partitionArray;
         }
 
-        public void setPartitionArray(LinkedList<PartitionItem> partitionArray) {
+        public void setPartitionArray(PartitionItem[] partitionArray) {
             this.partitionArray = partitionArray;
         }
 
@@ -63,7 +61,7 @@ public class ProduceResponseV11 extends BaseResponseBody {
         private Field recordErrorArrayLength;
         private Field errorMessage;
         private Field recordBatchArrayLength;
-        private LinkedList<BatchRecordItem> recordBatchArray;
+        private BatchRecordItem[] recordBatchArray;
         private Field tagBuffer;
 
         public Field getPartitionIndex() {
@@ -130,11 +128,11 @@ public class ProduceResponseV11 extends BaseResponseBody {
             this.recordBatchArrayLength = recordBatchArrayLength;
         }
 
-        public LinkedList<BatchRecordItem> getRecordBatchArray() {
+        public BatchRecordItem[] getRecordBatchArray() {
             return recordBatchArray;
         }
 
-        public void setRecordBatchArray(LinkedList<BatchRecordItem> recordBatchArray) {
+        public void setRecordBatchArray(BatchRecordItem[] recordBatchArray) {
             this.recordBatchArray = recordBatchArray;
         }
 
@@ -161,7 +159,7 @@ public class ProduceResponseV11 extends BaseResponseBody {
         private Field producerEpoch;
         private Field baseSequence;
         private Field recordArrayLength;
-        private LinkedList<RecordItem> recordArray;
+        private RecordItem[] recordArray;
 
         public Field getBaseOffset() {
             return baseOffset;
@@ -267,11 +265,11 @@ public class ProduceResponseV11 extends BaseResponseBody {
             this.recordArrayLength = recordArrayLength;
         }
 
-        public LinkedList<RecordItem> getRecordArray() {
+        public RecordItem[] getRecordArray() {
             return recordArray;
         }
 
-        public void setRecordArray(LinkedList<RecordItem> recordArray) {
+        public void setRecordArray(RecordItem[] recordArray) {
             this.recordArray = recordArray;
         }
     }
@@ -353,7 +351,7 @@ public class ProduceResponseV11 extends BaseResponseBody {
 
     private Field errorCode;
     private Field responseLength;
-    private LinkedList<Response> responseList;
+    private Response[] responseArray;
     private Field throttleTimeMs;
     private Field tagBuffer;
 
@@ -373,12 +371,12 @@ public class ProduceResponseV11 extends BaseResponseBody {
         this.responseLength = responseLength;
     }
 
-    public LinkedList<Response> getResponseList() {
-        return responseList;
+    public Response[] getResponseArray() {
+        return responseArray;
     }
 
-    public void setResponseList(LinkedList<Response> responseList) {
-        this.responseList = responseList;
+    public void setResponseArray(Response[] responseArray) {
+        this.responseArray = responseArray;
     }
 
     public Field getThrottleTimeMs() {
