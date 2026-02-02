@@ -2,6 +2,8 @@ package service.broker.impl;
 
 import domain.Field;
 import domain.Offset;
+import domain.metadata.record.PartitionValue;
+import domain.metadata.record.TopicValue;
 import domain.request.RequestHeaderV2;
 import domain.request.body.ProduceRequestV11;
 import domain.response.body.ProduceResponseV11;
@@ -9,11 +11,13 @@ import enums.ApiKey;
 import enums.FieldType;
 import service.broker.BaseBrokerService;
 import service.broker.BrokerService;
+import service.log.BaseLogValueService;
 import utils.BrokerUtil;
 import utils.ByteUtil;
 import utils.FieldUtil;
 
 import java.util.LinkedList;
+import java.util.Objects;
 
 public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceResponseV11> {
 
@@ -130,6 +134,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
     }
 
     private ProduceResponseV11.Response getProduceResponse(ProduceRequestV11.TopicItem topicItem) {
+        TopicValue topicValue = BaseLogValueService.getTopicByNameField(topicItem.getTopicName());
         ProduceResponseV11.Response response = new ProduceResponseV11.Response();
         response.setTopicNameLength(topicItem.getTopicNameLength());
         response.setTopicName(topicItem.getTopicName());
@@ -137,20 +142,35 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         int partitionLength = ByteUtil.convertStreamToByte(topicItem.getPartitionArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceResponseV11.PartitionItem[] partitionArray = new ProduceResponseV11.PartitionItem[partitionLength];
         for (int i=0; i<partitionLength; i++) {
-            partitionArray[i] = getProducePartition(topicItem.getPartitionArray()[i]);
+            partitionArray[i] = getProducePartition(topicValue, topicItem.getPartitionArray()[i]);
         }
         response.setPartitionArray(partitionArray);
         response.setTagBuffer(FieldUtil.getDefaultTaggedFieldSize());
         return response;
     }
 
-    private ProduceResponseV11.PartitionItem getProducePartition(ProduceRequestV11.PartitionItem partitionItem) {
+    private ProduceResponseV11.PartitionItem getProducePartition(TopicValue topicValue, ProduceRequestV11.PartitionItem partitionItem) {
+        Field errorCode = FieldUtil.getErrorCodeNone();
+        if (!Objects.nonNull(topicValue)) {
+            errorCode = FieldUtil.getErrorCodeUnknownTopicOrPartition();
+        } else {
+            PartitionValue partitionValue = BaseLogValueService.isPartitionExistByTopicUUIDAndPartitionIdField(topicValue.getTopicUUID(), partitionItem.getPartitionIndex());
+            errorCode = Objects.isNull(partitionValue) ? FieldUtil.getErrorCodeUnknownTopicOrPartition() : errorCode;
+        }
         ProduceResponseV11.PartitionItem responsePartitionItem = new ProduceResponseV11.PartitionItem();
         responsePartitionItem.setPartitionIndex(partitionItem.getPartitionIndex());
-        responsePartitionItem.setErrorCode(FieldUtil.getErrorCodeUnknownTopicOrPartition());
-        responsePartitionItem.setBaseOffset(FieldUtil.getErrorPartitionItemBaseOffset());
+        responsePartitionItem.setErrorCode(errorCode);
+        if (Objects.equals(errorCode, FieldUtil.getErrorCodeNone())) {
+            responsePartitionItem.setBaseOffset(FieldUtil.getPartitionItemBaseOffset());
+        } else if (Objects.equals(errorCode, FieldUtil.getErrorCodeUnknownTopicOrPartition())) {
+            responsePartitionItem.setBaseOffset(FieldUtil.getErrorPartitionItemBaseOffset());
+        }
         responsePartitionItem.setLogAppendTime(FieldUtil.getErrorPartitionItemLogAppendTime());
-        responsePartitionItem.setLogStartOffset(FieldUtil.getErrorPartitionItemLogStartOffset());
+        if (Objects.equals(errorCode, FieldUtil.getErrorCodeNone())) {
+            responsePartitionItem.setLogStartOffset(FieldUtil.getPartitionItemLogStartOffset());
+        } else if (Objects.equals(errorCode, FieldUtil.getErrorCodeUnknownTopicOrPartition())) {
+            responsePartitionItem.setLogStartOffset(FieldUtil.getErrorPartitionItemLogStartOffset());
+        }
         responsePartitionItem.setRecordErrorArrayLength(FieldUtil.getErrorPartitionArrayLength());
         responsePartitionItem.setErrorMessage(FieldUtil.getErrorPartitionMessage());
         responsePartitionItem.setTagBuffer(FieldUtil.getDefaultTaggedFieldSize());

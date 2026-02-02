@@ -62,6 +62,11 @@ public class FieldUtil {
         return BrokerUtil.wrapField(errorPartitionItemBaseOffsetStream, FieldType.BIG_INTEGER);
     }
 
+    public static Field getPartitionItemBaseOffset() {
+        byte[] partitionItemBaseOffsetStream = ByteUtil.convertLongToStream(Constant.PARTITION_ITEM_BASE_OFFSET);
+        return BrokerUtil.wrapField(partitionItemBaseOffsetStream, FieldType.BIG_INTEGER);
+    }
+
     public static Field getErrorPartitionItemLogAppendTime() {
         byte[] errorPartitionItemLogAppendTimeStream = ByteUtil.convertLongToStream(Constant.ERROR_PARTITION_ITEM_LOG_APPEND_TIME);
         return BrokerUtil.wrapField(errorPartitionItemLogAppendTimeStream, FieldType.BIG_INTEGER);
@@ -70,6 +75,11 @@ public class FieldUtil {
     public static Field getErrorPartitionItemLogStartOffset() {
         byte[] errorPartitionItemLogStartOffsetStream = ByteUtil.convertLongToStream(Constant.ERROR_PARTITION_ITEM_LOG_START_OFFSET);
         return BrokerUtil.wrapField(errorPartitionItemLogStartOffsetStream, FieldType.BIG_INTEGER);
+    }
+
+    public static Field getPartitionItemLogStartOffset() {
+        byte[] partitionItemLogStartOffsetStream = ByteUtil.convertLongToStream(Constant.PARTITION_ITEM_LOG_START_OFFSET);
+        return BrokerUtil.wrapField(partitionItemLogStartOffsetStream, FieldType.BIG_INTEGER);
     }
 
     public static Field getErrorPartitionArrayLength() {
