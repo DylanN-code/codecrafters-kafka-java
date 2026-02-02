@@ -60,14 +60,17 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
     private ProduceRequestV11.PartitionItem parseProduceRequestPartitionItem(byte[] bytes, Offset offset) {
         ProduceRequestV11.PartitionItem partitionItem = new ProduceRequestV11.PartitionItem();
         partitionItem.setPartitionIndex(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
+        // records => COMPACT_RECORDS (compact byte array: length + raw bytes)
+        // Read the compact length (N+1 for N bytes, or 0 for null)
         partitionItem.setRecordBatchArrayLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        int recordBatchArrayLength = ByteUtil.convertStreamToByte(partitionItem.getRecordBatchArrayLength().getData()) - FieldType.BYTE.getByteSize();
-        ProduceRequestV11.BatchRecordItem[] batchRecordArray = new ProduceRequestV11.BatchRecordItem[recordBatchArrayLength];
-        for (int i=0; i<recordBatchArrayLength; i++) {
-            ProduceRequestV11.BatchRecordItem batchRecordItem = parseProduceRequestBatchRecordItem(bytes, offset);
-            batchRecordArray[i] = batchRecordItem;
+        int recordsLength = ByteUtil.convertStreamToByte(partitionItem.getRecordBatchArrayLength().getData()) - FieldType.BYTE.getByteSize();
+        // Skip over the raw record batch bytes (we don't need to parse for error response)
+        if (recordsLength > 0) {
+            // Just advance the offset by reading and discarding the records data
+            BrokerUtil.wrapField(bytes, offset, FieldType.STRING, recordsLength);
         }
-        partitionItem.setRecordBatchArray(batchRecordArray);
+        // Store empty array since we're not parsing the batches for error responses
+        partitionItem.setRecordBatchArray(new ProduceRequestV11.BatchRecordItem[0]);
         partitionItem.setTagBuffer(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         return partitionItem;
     }
@@ -134,16 +137,16 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         int partitionLength = ByteUtil.convertStreamToByte(topicItem.getPartitionArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceResponseV11.PartitionItem[] partitionArray = new ProduceResponseV11.PartitionItem[partitionLength];
         for (int i=0; i<partitionLength; i++) {
-            partitionArray[i] = getProducePartition(topicItem.getPartitionArray()[i], i);
+            partitionArray[i] = getProducePartition(topicItem.getPartitionArray()[i]);
         }
         response.setPartitionArray(partitionArray);
         response.setTagBuffer(FieldUtil.getDefaultTaggedFieldSize());
         return response;
     }
 
-    private ProduceResponseV11.PartitionItem getProducePartition(ProduceRequestV11.PartitionItem partitionItem, int i) {
+    private ProduceResponseV11.PartitionItem getProducePartition(ProduceRequestV11.PartitionItem partitionItem) {
         ProduceResponseV11.PartitionItem responsePartitionItem = new ProduceResponseV11.PartitionItem();
-        responsePartitionItem.setPartitionIndex(BrokerUtil.wrapField(ByteUtil.convertIntToStream(i), FieldType.INTEGER));
+        responsePartitionItem.setPartitionIndex(partitionItem.getPartitionIndex());
         responsePartitionItem.setErrorCode(FieldUtil.getErrorCodeUnknownTopicOrPartition());
         responsePartitionItem.setBaseOffset(FieldUtil.getErrorPartitionItemBaseOffset());
         responsePartitionItem.setLogAppendTime(FieldUtil.getErrorPartitionItemLogAppendTime());
@@ -156,6 +159,30 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
 
     @Override
     public LinkedList<Field> flattenResponse(ProduceResponseV11 responseBody, RequestHeaderV2 requestHeader) {
-        return null;
+        LinkedList<Field> fieldLinkedList = new LinkedList<>();
+        // Add response header fields
+        fieldLinkedList.add(requestHeader.getCorrelationId());
+        fieldLinkedList.add(FieldUtil.getDefaultTaggedFieldSize());
+        // Add response body fields
+        fieldLinkedList.add(responseBody.getResponseLength());
+        for (ProduceResponseV11.Response response: responseBody.getResponseArray()) {
+            fieldLinkedList.add(response.getTopicNameLength());
+            fieldLinkedList.add(response.getTopicName());
+            fieldLinkedList.add(response.getPartitionArrayLength());
+            for (ProduceResponseV11.PartitionItem partitionItem: response.getPartitionArray()) {
+                fieldLinkedList.add(partitionItem.getPartitionIndex());
+                fieldLinkedList.add(partitionItem.getErrorCode());
+                fieldLinkedList.add(partitionItem.getBaseOffset());
+                fieldLinkedList.add(partitionItem.getLogAppendTime());
+                fieldLinkedList.add(partitionItem.getLogStartOffset());
+                fieldLinkedList.add(partitionItem.getRecordErrorArrayLength());
+                fieldLinkedList.add(partitionItem.getErrorMessage());
+                fieldLinkedList.add(partitionItem.getTagBuffer());
+            }
+            fieldLinkedList.add(response.getTagBuffer());
+        }
+        fieldLinkedList.add(responseBody.getThrottleTimeMs());
+        fieldLinkedList.add(responseBody.getTagBuffer());
+        return fieldLinkedList;
     }
 }
