@@ -19,6 +19,7 @@ import utils.FieldUtil;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -75,8 +76,12 @@ public class DescribeTopicPartitionsImpl extends BaseBrokerService<DescribeTopic
         responseBodyV0.setThrottleTimeMS(FieldUtil.getThrottleTimeMS());
         responseBodyV0.setTopicArrayLength(request.getTopicListLength());
 
+        // Sort topics alphabetically by name
+        List<DescribeTopicPartitionsRequestBodyV0.Item> sortedTopicList = new ArrayList<>(request.getTopicList());
+        sortedTopicList.sort(Comparator.comparing(item -> new String(item.getTopicName().getData())));
+
         List<DescribeTopicPartitionsResponseBodyV0.TopicItem> itemList = new ArrayList<>();
-        for (DescribeTopicPartitionsRequestBodyV0.Item requestItem : request.getTopicList()) {
+        for (DescribeTopicPartitionsRequestBodyV0.Item requestItem : sortedTopicList) {
             DescribeTopicPartitionsResponseBodyV0.TopicItem responseBodyV0TopicItem = getResponseBodyV0TopicItem(requestItem);
             itemList.add(responseBodyV0TopicItem);
         }
