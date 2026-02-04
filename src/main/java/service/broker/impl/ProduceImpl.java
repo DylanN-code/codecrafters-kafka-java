@@ -1,6 +1,8 @@
 package service.broker.impl;
 
+import constants.Constant;
 import domain.Field;
+import domain.LogContext;
 import domain.Offset;
 import domain.metadata.record.PartitionValue;
 import domain.metadata.record.TopicValue;
@@ -9,13 +11,15 @@ import domain.request.body.ProduceRequestV11;
 import domain.response.body.ProduceResponseV11;
 import enums.ApiKey;
 import enums.FieldType;
+import enums.ValueType;
 import service.broker.BaseBrokerService;
 import service.broker.BrokerService;
 import service.log.BaseLogValueService;
-import utils.BrokerUtil;
-import utils.ByteUtil;
-import utils.FieldUtil;
+import utils.*;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -64,58 +68,16 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
     private ProduceRequestV11.PartitionItem parseProduceRequestPartitionItem(byte[] bytes, Offset offset) {
         ProduceRequestV11.PartitionItem partitionItem = new ProduceRequestV11.PartitionItem();
         partitionItem.setPartitionIndex(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        // records => COMPACT_RECORDS (compact byte array: length + raw bytes)
-        // Read the compact length (N+1 for N bytes, or 0 for null)
         partitionItem.setRecordBatchArrayLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int recordsLength = ByteUtil.convertStreamToByte(partitionItem.getRecordBatchArrayLength().getData()) - FieldType.BYTE.getByteSize();
-        // Skip over the raw record batch bytes (we don't need to parse for error response)
         if (recordsLength > 0) {
-            // Just advance the offset by reading and discarding the records data
-            BrokerUtil.wrapField(bytes, offset, FieldType.STRING, recordsLength);
+            Field recordBatchData = BrokerUtil.wrapField(bytes, offset, FieldType.STRING, recordsLength);
+            partitionItem.setRecordBatchData(recordBatchData);
+        } else {
+            partitionItem.setRecordBatchData(new Field(new byte[0], FieldType.STRING, 0));
         }
-        // Store empty array since we're not parsing the batches for error responses
-        partitionItem.setRecordBatchArray(new ProduceRequestV11.BatchRecordItem[0]);
         partitionItem.setTagBuffer(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         return partitionItem;
-    }
-
-    private ProduceRequestV11.BatchRecordItem parseProduceRequestBatchRecordItem(byte[] bytes, Offset offset) {
-        ProduceRequestV11.BatchRecordItem batchRecordItem = new ProduceRequestV11.BatchRecordItem();
-        batchRecordItem.setBaseOffset(BrokerUtil.wrapField(bytes, offset, FieldType.BIG_INTEGER));
-        batchRecordItem.setBatchSize(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        batchRecordItem.setPartitionLeaderEpoch(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        batchRecordItem.setMagicByte(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        batchRecordItem.setCrc32(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        batchRecordItem.setAttributes(BrokerUtil.wrapField(bytes, offset, FieldType.SHORT));
-        batchRecordItem.setLastOffsetDelta(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        batchRecordItem.setFirstTimestamp(BrokerUtil.wrapField(bytes, offset, FieldType.BIG_INTEGER));
-        batchRecordItem.setLastTimestamp(BrokerUtil.wrapField(bytes, offset, FieldType.BIG_INTEGER));
-        batchRecordItem.setProducerId(BrokerUtil.wrapField(bytes, offset, FieldType.BIG_INTEGER));
-        batchRecordItem.setProducerEpoch(BrokerUtil.wrapField(bytes, offset, FieldType.SHORT));
-        batchRecordItem.setBaseSequence(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        batchRecordItem.setRecordArrayLength(BrokerUtil.wrapField(bytes, offset, FieldType.INTEGER));
-        int recordArrayLength = ByteUtil.convertStreamToInt(batchRecordItem.getRecordArrayLength().getData()) - FieldType.INTEGER.getByteSize();
-        ProduceRequestV11.RecordItem[] recordItemArray = new ProduceRequestV11.RecordItem[recordArrayLength];
-        for (int i=0; i<recordArrayLength; i++) {
-            ProduceRequestV11.RecordItem recordItem = parseProduceRequestRecordItem(bytes, offset);
-            recordItemArray[i] = recordItem;
-        }
-        batchRecordItem.setRecordArray(recordItemArray);
-        return batchRecordItem;
-    }
-
-    private ProduceRequestV11.RecordItem parseProduceRequestRecordItem(byte[] bytes, Offset offset) {
-        ProduceRequestV11.RecordItem recordItem = new ProduceRequestV11.RecordItem();
-        recordItem.setRecordSize(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        recordItem.setAttributes(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        recordItem.setTimestampDelta(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        recordItem.setOffsetDelta(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        recordItem.setKeyLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        recordItem.setValueLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        int valueLength = ByteUtil.convertStreamToByte(recordItem.getValueLength().getData());
-        recordItem.setValue(BrokerUtil.wrapField(bytes, offset, FieldType.STRING, valueLength));
-        recordItem.setHeadersCount(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
-        return recordItem;
     }
 
     @Override
@@ -125,7 +87,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         int topicLength = ByteUtil.convertStreamToByte(request.getTopicArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceResponseV11.Response[] responseArray = new ProduceResponseV11.Response[topicLength];
         for (int i=0; i<topicLength; i++) {
-            responseArray[i] = getProduceResponse(request.getTopicArray()[i]);
+            responseArray[i] = handleThenGetProduceResponse(request.getTopicArray()[i]);
         }
         produceResponseV11.setResponseArray(responseArray);
         produceResponseV11.setThrottleTimeMs(FieldUtil.getThrottleTimeMS());
@@ -133,7 +95,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         return produceResponseV11;
     }
 
-    private ProduceResponseV11.Response getProduceResponse(ProduceRequestV11.TopicItem topicItem) {
+    private ProduceResponseV11.Response handleThenGetProduceResponse(ProduceRequestV11.TopicItem topicItem) {
         TopicValue topicValue = BaseLogValueService.getTopicByNameField(topicItem.getTopicName());
         ProduceResponseV11.Response response = new ProduceResponseV11.Response();
         response.setTopicNameLength(topicItem.getTopicNameLength());
@@ -142,14 +104,14 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         int partitionLength = ByteUtil.convertStreamToByte(topicItem.getPartitionArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceResponseV11.PartitionItem[] partitionArray = new ProduceResponseV11.PartitionItem[partitionLength];
         for (int i=0; i<partitionLength; i++) {
-            partitionArray[i] = getProducePartition(topicValue, topicItem.getPartitionArray()[i]);
+            partitionArray[i] = handleThenGetProducePartition(topicValue, topicItem.getPartitionArray()[i]);
         }
         response.setPartitionArray(partitionArray);
         response.setTagBuffer(FieldUtil.getDefaultTaggedFieldSize());
         return response;
     }
 
-    private ProduceResponseV11.PartitionItem getProducePartition(TopicValue topicValue, ProduceRequestV11.PartitionItem partitionItem) {
+    private ProduceResponseV11.PartitionItem handleThenGetProducePartition(TopicValue topicValue, ProduceRequestV11.PartitionItem partitionItem) {
         Field errorCode = FieldUtil.getErrorCodeNone();
         if (!Objects.nonNull(topicValue)) {
             errorCode = FieldUtil.getErrorCodeUnknownTopicOrPartition();
@@ -157,6 +119,11 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
             PartitionValue partitionValue = BaseLogValueService.isPartitionExistByTopicUUIDAndPartitionIdField(topicValue.getTopicUUID(), partitionItem.getPartitionIndex());
             errorCode = Objects.isNull(partitionValue) ? FieldUtil.getErrorCodeUnknownTopicOrPartition() : errorCode;
         }
+
+        if (Objects.equals(errorCode, FieldUtil.getErrorCodeNone())) {
+            handlePartition(topicValue, partitionItem);
+        }
+
         ProduceResponseV11.PartitionItem responsePartitionItem = new ProduceResponseV11.PartitionItem();
         responsePartitionItem.setPartitionIndex(partitionItem.getPartitionIndex());
         responsePartitionItem.setErrorCode(errorCode);
@@ -175,6 +142,26 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         responsePartitionItem.setErrorMessage(FieldUtil.getErrorPartitionMessage());
         responsePartitionItem.setTagBuffer(FieldUtil.getDefaultTaggedFieldSize());
         return responsePartitionItem;
+    }
+
+    private void handlePartition(TopicValue topicValue, ProduceRequestV11.PartitionItem partitionItem) {
+        String logFolderDefaultPath = PropertyUtil.getProperty(Constant.COMBINED_LOG_FOLDER_DEFAULT_PATH);
+        String topicName = new String(topicValue.getTopicName().getData());
+        String partitionIndex = String.valueOf(ByteUtil.convertStreamToInt(partitionItem.getPartitionIndex().getData()));
+        String batchRecordLogFolderName = String.format(Constant.BATCH_RECORD_LOG_DATA_FOLDER_NAME, topicName, partitionIndex);
+        Path batchRecordLogFileName = Path.of(logFolderDefaultPath, batchRecordLogFolderName, Constant.FIRST_LOG_FILE_NAME);
+        System.out.println(batchRecordLogFileName);
+        try {
+            LogContext logContext = new LogContext();
+            logContext.setFilePath(batchRecordLogFileName.toString());
+            logContext.setValueType(ValueType.PARTITION);
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            byteArrayOutputStream.writeBytes(partitionItem.getRecordBatchData().getData());
+            logContext.setOs(byteArrayOutputStream);
+            LogUtil.saveLog(logContext);
+        } catch (IOException e) {
+            System.out.println("failed to handle batch record from partition log due to error=" + e.getMessage());
+        }
     }
 
     @Override

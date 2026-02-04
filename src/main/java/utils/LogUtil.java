@@ -9,10 +9,7 @@ import enums.FieldType;
 import enums.ValueType;
 import service.log.BaseLogValueService;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.LinkedList;
 import java.util.Objects;
 
@@ -102,5 +99,19 @@ public class LogUtil {
 
     private static Value getLogValue(LogContext logContext) throws IOException {
         return BaseLogValueService.getLogValue(logContext);
+    }
+
+    public static void saveLog(LogContext logContext) throws IOException {
+        if (Objects.isNull(logContext) || Objects.isNull(logContext.getFilePath()) || logContext.getFilePath().isBlank()) {
+            return;
+        }
+        String filePath = logContext.getFilePath();
+        File file = new File(filePath);
+        if (!file.exists()) {
+            System.out.println("failed to load due to file not found, logContext=" + logContext);
+            return;
+        }
+        FileOutputStream fileOS = new FileOutputStream(file);
+        fileOS.write(logContext.getOs().toByteArray());
     }
 }
