@@ -5,6 +5,52 @@ import domain.Field;
 import java.util.List;
 
 public class DescribeTopicPartitionsResponseBodyV0 extends BaseResponseBody {
+    private Field throttleTimeMS;
+    private Field topicArrayLength;
+    private List<TopicItem> topicList;
+    private Field nextCursor;
+    private Field taggedFieldSize;
+
+    public Field getThrottleTimeMS() {
+        return throttleTimeMS;
+    }
+
+    public void setThrottleTimeMS(Field throttleTimeMS) {
+        this.throttleTimeMS = throttleTimeMS;
+    }
+
+    public Field getTopicArrayLength() {
+        return topicArrayLength;
+    }
+
+    public void setTopicArrayLength(Field topicArrayLength) {
+        this.topicArrayLength = topicArrayLength;
+    }
+
+    public List<TopicItem> getTopicList() {
+        return topicList;
+    }
+
+    public void setTopicList(List<TopicItem> topicList) {
+        this.topicList = topicList;
+    }
+
+    public Field getNextCursor() {
+        return nextCursor;
+    }
+
+    public void setNextCursor(Field nextCursor) {
+        this.nextCursor = nextCursor;
+    }
+
+    public Field getTaggedFieldSize() {
+        return taggedFieldSize;
+    }
+
+    public void setTaggedFieldSize(Field taggedFieldSize) {
+        this.taggedFieldSize = taggedFieldSize;
+    }
+
     public static class TopicItem {
         private Field errorCode;
         private Field topicNameLength;
@@ -198,51 +244,5 @@ public class DescribeTopicPartitionsResponseBodyV0 extends BaseResponseBody {
         public void setTaggedFieldSize(Field taggedFieldSize) {
             this.taggedFieldSize = taggedFieldSize;
         }
-    }
-
-    private Field throttleTimeMS;
-    private Field topicArrayLength;
-    private List<TopicItem> topicList;
-    private Field nextCursor;
-    private Field taggedFieldSize;
-
-    public Field getThrottleTimeMS() {
-        return throttleTimeMS;
-    }
-
-    public void setThrottleTimeMS(Field throttleTimeMS) {
-        this.throttleTimeMS = throttleTimeMS;
-    }
-
-    public Field getTopicArrayLength() {
-        return topicArrayLength;
-    }
-
-    public void setTopicArrayLength(Field topicArrayLength) {
-        this.topicArrayLength = topicArrayLength;
-    }
-
-    public List<TopicItem> getTopicList() {
-        return topicList;
-    }
-
-    public void setTopicList(List<TopicItem> topicList) {
-        this.topicList = topicList;
-    }
-
-    public Field getNextCursor() {
-        return nextCursor;
-    }
-
-    public void setNextCursor(Field nextCursor) {
-        this.nextCursor = nextCursor;
-    }
-
-    public Field getTaggedFieldSize() {
-        return taggedFieldSize;
-    }
-
-    public void setTaggedFieldSize(Field taggedFieldSize) {
-        this.taggedFieldSize = taggedFieldSize;
     }
 }

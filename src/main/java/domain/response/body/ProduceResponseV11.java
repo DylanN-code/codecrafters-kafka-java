@@ -4,6 +4,52 @@ import domain.Field;
 
 public class ProduceResponseV11 extends BaseResponseBody {
 
+    private Field errorCode;
+    private Field responseLength;
+    private Response[] responseArray;
+    private Field throttleTimeMs;
+    private Field tagBuffer;
+
+    public Field getErrorCode() {
+        return errorCode;
+    }
+
+    public void setErrorCode(Field errorCode) {
+        this.errorCode = errorCode;
+    }
+
+    public Field getResponseLength() {
+        return responseLength;
+    }
+
+    public void setResponseLength(Field responseLength) {
+        this.responseLength = responseLength;
+    }
+
+    public Response[] getResponseArray() {
+        return responseArray;
+    }
+
+    public void setResponseArray(Response[] responseArray) {
+        this.responseArray = responseArray;
+    }
+
+    public Field getThrottleTimeMs() {
+        return throttleTimeMs;
+    }
+
+    public void setThrottleTimeMs(Field throttleTimeMs) {
+        this.throttleTimeMs = throttleTimeMs;
+    }
+
+    public Field getTagBuffer() {
+        return tagBuffer;
+    }
+
+    public void setTagBuffer(Field tagBuffer) {
+        this.tagBuffer = tagBuffer;
+    }
+
     public static class Response {
         private Field topicNameLength;
         private Field topicName;
@@ -347,51 +393,5 @@ public class ProduceResponseV11 extends BaseResponseBody {
         public void setHeadersCount(Field headersCount) {
             this.headersCount = headersCount;
         }
-    }
-
-    private Field errorCode;
-    private Field responseLength;
-    private Response[] responseArray;
-    private Field throttleTimeMs;
-    private Field tagBuffer;
-
-    public Field getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(Field errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public Field getResponseLength() {
-        return responseLength;
-    }
-
-    public void setResponseLength(Field responseLength) {
-        this.responseLength = responseLength;
-    }
-
-    public Response[] getResponseArray() {
-        return responseArray;
-    }
-
-    public void setResponseArray(Response[] responseArray) {
-        this.responseArray = responseArray;
-    }
-
-    public Field getThrottleTimeMs() {
-        return throttleTimeMs;
-    }
-
-    public void setThrottleTimeMs(Field throttleTimeMs) {
-        this.throttleTimeMs = throttleTimeMs;
-    }
-
-    public Field getTagBuffer() {
-        return tagBuffer;
-    }
-
-    public void setTagBuffer(Field tagBuffer) {
-        this.tagBuffer = tagBuffer;
     }
 }

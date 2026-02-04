@@ -21,7 +21,8 @@ public interface BrokerService<T extends BaseRequestBody, R extends BaseResponse
 
     /**
      * parse the byte stream into request body obj
-     * @param bytes request byte stream
+     *
+     * @param bytes  request byte stream
      * @param offset current offset
      * @return request body
      */
@@ -29,6 +30,7 @@ public interface BrokerService<T extends BaseRequestBody, R extends BaseResponse
 
     /**
      * load info from request obj to response obj
+     *
      * @param request request body
      * @return response body
      */
@@ -36,7 +38,8 @@ public interface BrokerService<T extends BaseRequestBody, R extends BaseResponse
 
     /**
      * flatten response obj to list of fields
-     * @param responseBody response body
+     *
+     * @param responseBody  response body
      * @param requestHeader request header V2
      * @return list of field items
      */

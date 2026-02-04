@@ -36,7 +36,7 @@ public abstract class BaseLogValueService<T extends Value> implements LogValueSe
     public static PartitionValue isPartitionExistByTopicUUIDAndPartitionIdField(Field inputTopicField, Field inputPartitionIdField) {
         String inputTopicUUID = new String(inputTopicField.getData());
         String inputPartitionId = new String(inputPartitionIdField.getData());
-        for (PartitionValue partitionValue: METADATA_CLUSTER_PARTITION_VALUE_MAP.values()) {
+        for (PartitionValue partitionValue : METADATA_CLUSTER_PARTITION_VALUE_MAP.values()) {
             String storedTopicUUID = new String(partitionValue.getTopicUUID().getData());
             String storedPartitionId = new String(partitionValue.getPartitionId().getData());
             if (Objects.equals(inputTopicUUID, storedTopicUUID) && Objects.equals(inputPartitionId, storedPartitionId)) {

@@ -39,7 +39,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         produceRequestV11.setTopicArrayLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int topicArrayLength = ByteUtil.convertStreamToByte(produceRequestV11.getTopicArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceRequestV11.TopicItem[] topicItemArray = new ProduceRequestV11.TopicItem[topicArrayLength];
-        for (int i=0; i<topicArrayLength; i++) {
+        for (int i = 0; i < topicArrayLength; i++) {
             ProduceRequestV11.TopicItem topicItem = parseProduceRequestTopicItem(bytes, offset);
             topicItemArray[i] = topicItem;
         }
@@ -56,7 +56,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         topicItem.setPartitionArrayLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int partitionArrayLength = ByteUtil.convertStreamToByte(topicItem.getPartitionArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceRequestV11.PartitionItem[] partitionItemArray = new ProduceRequestV11.PartitionItem[partitionArrayLength];
-        for (int i=0; i<partitionArrayLength; i++) {
+        for (int i = 0; i < partitionArrayLength; i++) {
             ProduceRequestV11.PartitionItem partitionItem = parseProduceRequestPartitionItem(bytes, offset);
             partitionItemArray[i] = partitionItem;
         }
@@ -86,7 +86,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         produceResponseV11.setResponseLength(request.getTopicArrayLength());
         int topicLength = ByteUtil.convertStreamToByte(request.getTopicArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceResponseV11.Response[] responseArray = new ProduceResponseV11.Response[topicLength];
-        for (int i=0; i<topicLength; i++) {
+        for (int i = 0; i < topicLength; i++) {
             responseArray[i] = handleThenGetProduceResponse(request.getTopicArray()[i]);
         }
         produceResponseV11.setResponseArray(responseArray);
@@ -103,7 +103,7 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         response.setPartitionArrayLength(topicItem.getPartitionArrayLength());
         int partitionLength = ByteUtil.convertStreamToByte(topicItem.getPartitionArrayLength().getData()) - FieldType.BYTE.getByteSize();
         ProduceResponseV11.PartitionItem[] partitionArray = new ProduceResponseV11.PartitionItem[partitionLength];
-        for (int i=0; i<partitionLength; i++) {
+        for (int i = 0; i < partitionLength; i++) {
             partitionArray[i] = handleThenGetProducePartition(topicValue, topicItem.getPartitionArray()[i]);
         }
         response.setPartitionArray(partitionArray);
@@ -172,11 +172,11 @@ public class ProduceImpl extends BaseBrokerService<ProduceRequestV11, ProduceRes
         fieldLinkedList.add(FieldUtil.getDefaultTaggedFieldSize());
         // Add response body fields
         fieldLinkedList.add(responseBody.getResponseLength());
-        for (ProduceResponseV11.Response response: responseBody.getResponseArray()) {
+        for (ProduceResponseV11.Response response : responseBody.getResponseArray()) {
             fieldLinkedList.add(response.getTopicNameLength());
             fieldLinkedList.add(response.getTopicName());
             fieldLinkedList.add(response.getPartitionArrayLength());
-            for (ProduceResponseV11.PartitionItem partitionItem: response.getPartitionArray()) {
+            for (ProduceResponseV11.PartitionItem partitionItem : response.getPartitionArray()) {
                 fieldLinkedList.add(partitionItem.getPartitionIndex());
                 fieldLinkedList.add(partitionItem.getErrorCode());
                 fieldLinkedList.add(partitionItem.getBaseOffset());

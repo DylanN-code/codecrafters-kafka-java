@@ -54,8 +54,8 @@ public class BrokerUtil {
     private static byte[] deepCopy(byte[] input) {
         int l = input.length;
         byte[] output = new byte[l];
-        for (int i=0; i<l; i++) {
-            output[i] = input[i];;
+        for (int i = 0; i < l; i++) {
+            output[i] = input[i];
         }
         return output;
     }
@@ -88,7 +88,7 @@ public class BrokerUtil {
 
     private static byte[] convertToStream(LinkedList<Field> fieldLinkedList) {
         int allocationSize = getMessageSizeFromFieldList(fieldLinkedList);
-        ByteBuffer byteBuffer =  ByteBuffer.allocate(allocationSize).order(ByteOrder.BIG_ENDIAN);
+        ByteBuffer byteBuffer = ByteBuffer.allocate(allocationSize).order(ByteOrder.BIG_ENDIAN);
         fieldLinkedList.forEach(f -> byteBuffer.put(f.getData()));
         return byteBuffer.array();
     }

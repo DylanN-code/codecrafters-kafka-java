@@ -15,7 +15,10 @@ import enums.FieldType;
 import service.broker.BaseBrokerService;
 import service.broker.BrokerService;
 import service.log.BaseLogValueService;
-import utils.*;
+import utils.BrokerUtil;
+import utils.ByteUtil;
+import utils.FieldUtil;
+import utils.FileUtil;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -41,7 +44,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         requestBodyV16.setTopicLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int topicLength = ByteUtil.convertStreamToByte(requestBodyV16.getTopicLength().getData()) - FieldType.BYTE.getByteSize();
         List<FetchRequestBodyV16.TopicItem> topicItemList = new ArrayList<>();
-        for (int i=0; i<topicLength; i++) {
+        for (int i = 0; i < topicLength; i++) {
             FetchRequestBodyV16.TopicItem topicItem = getFetchRequestBodyTopicItem(bytes, offset);
             topicItemList.add(topicItem);
         }
@@ -49,7 +52,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         requestBodyV16.setForgottenTopicDataLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int forgottenTopicDataLength = ByteUtil.convertStreamToByte(requestBodyV16.getForgottenTopicDataLength().getData()) - FieldType.BYTE.getByteSize();
         List<FetchRequestBodyV16.ForgottenTopic> forgottenTopicDataList = new ArrayList<>();
-        for (int i=0; i<forgottenTopicDataLength; i++) {
+        for (int i = 0; i < forgottenTopicDataLength; i++) {
             FetchRequestBodyV16.ForgottenTopic forgottenTopicData = getFetchRequestBodyForgottenTopicData(bytes, offset);
             forgottenTopicDataList.add(forgottenTopicData);
         }
@@ -67,7 +70,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         topicItem.setPartitionLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int partitionLength = ByteUtil.convertStreamToByte(topicItem.getPartitionLength().getData()) - FieldType.BYTE.getByteSize();
         List<FetchRequestBodyV16.PartitionItem> partitionItemList = new ArrayList<>();
-        for (int i=0; i<partitionLength; i++) {
+        for (int i = 0; i < partitionLength; i++) {
             FetchRequestBodyV16.PartitionItem partitionItem = getFetchRequestBodyV16PartitionItem(bytes, offset);
             partitionItemList.add(partitionItem);
         }
@@ -82,7 +85,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         forgottenTopicData.setPartitionLength(BrokerUtil.wrapField(bytes, offset, FieldType.BYTE));
         int partitionLength = ByteUtil.convertStreamToByte(forgottenTopicData.getPartitionLength().getData()) - FieldType.BYTE.getByteSize();
         List<FetchRequestBodyV16.PartitionItem> partitionItemList = new ArrayList<>();
-        for (int i=0; i<partitionLength; i++) {
+        for (int i = 0; i < partitionLength; i++) {
             FetchRequestBodyV16.PartitionItem partitionItem = getFetchRequestBodyV16PartitionItem(bytes, offset);
             partitionItemList.add(partitionItem);
         }
@@ -113,7 +116,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         int topicLength = ByteUtil.convertStreamToByte(request.getTopicLength().getData());
         if (topicLength > 0) {
             List<FetchResponseBodyV16.Response> responseList = new ArrayList<>();
-            for (int i=0; i<topicLength-1; i++) {
+            for (int i = 0; i < topicLength - 1; i++) {
                 FetchRequestBodyV16.TopicItem topicItem = request.getTopicItemList().get(i);
                 FetchResponseBodyV16.Response response = getFetchResponseBodyResponse(topicItem);
                 responseList.add(response);
@@ -134,7 +137,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         int partitionLength = ByteUtil.convertStreamToByte(response.getPartitionLength().getData());
         if (partitionLength > 0) {
             List<FetchResponseBodyV16.PartitionItem> partitionItemList = new ArrayList<>();
-            for (int i=0; i<partitionLength-1; i++) {
+            for (int i = 0; i < partitionLength - 1; i++) {
                 FetchResponseBodyV16.PartitionItem responsePartitionItem = getFetchResponseBodyPartitionItem(topicValue, i);
                 partitionItemList.add(responsePartitionItem);
             }
@@ -191,10 +194,10 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
         fieldLinkedList.add(responseBody.getErrorCode());
         fieldLinkedList.add(responseBody.getSessionId());
         fieldLinkedList.add(responseBody.getResponseLength());
-        for (FetchResponseBodyV16.Response response: responseBody.getResponseList()) {
+        for (FetchResponseBodyV16.Response response : responseBody.getResponseList()) {
             fieldLinkedList.add(response.getTopicId());
             fieldLinkedList.add(response.getPartitionLength());
-            for (FetchResponseBodyV16.PartitionItem partitionItem: response.getPartitionItemList()) {
+            for (FetchResponseBodyV16.PartitionItem partitionItem : response.getPartitionItemList()) {
                 fieldLinkedList.add(partitionItem.getPartitionIndex());
                 fieldLinkedList.add(partitionItem.getErrorCode());
                 fieldLinkedList.add(partitionItem.getHighWaterMark());
@@ -203,7 +206,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
                 fieldLinkedList.add(partitionItem.getAbortedTransactionLength());
                 fieldLinkedList.add(partitionItem.getPreferredReadReplica());
                 fieldLinkedList.add(partitionItem.getBatchRecordLength());
-                for (Batch batch: partitionItem.getBatchRecordList()) {
+                for (Batch batch : partitionItem.getBatchRecordList()) {
                     fieldLinkedList.add(batch.getBaseOffset());
                     fieldLinkedList.add(batch.getBatchLength());
                     fieldLinkedList.add(batch.getPartitionLeaderEpoch());
@@ -217,7 +220,7 @@ public class FetchImpl extends BaseBrokerService<FetchRequestBodyV16, FetchRespo
                     fieldLinkedList.add(batch.getProducerEpoch());
                     fieldLinkedList.add(batch.getBaseSequence());
                     fieldLinkedList.add(batch.getRecordLength());
-                    for (Record record: batch.getRecords()) {
+                    for (Record record : batch.getRecords()) {
                         fieldLinkedList.add(record.getLength());
                         fieldLinkedList.add(record.getAttributes());
                         fieldLinkedList.add(record.getTimestampDelta());

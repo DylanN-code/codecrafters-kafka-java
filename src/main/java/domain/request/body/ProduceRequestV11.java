@@ -4,6 +4,61 @@ import domain.Field;
 
 public class ProduceRequestV11 extends BaseRequestBody {
 
+    private Field transactionalId;
+    private Field requiredAcks;
+    private Field timeout;
+    private Field topicArrayLength;
+    private TopicItem[] topicArray;
+    private Field tagBuffer;
+
+    public Field getTransactionalId() {
+        return transactionalId;
+    }
+
+    public void setTransactionalId(Field transactionalId) {
+        this.transactionalId = transactionalId;
+    }
+
+    public Field getRequiredAcks() {
+        return requiredAcks;
+    }
+
+    public void setRequiredAcks(Field requiredAcks) {
+        this.requiredAcks = requiredAcks;
+    }
+
+    public Field getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(Field timeout) {
+        this.timeout = timeout;
+    }
+
+    public Field getTopicArrayLength() {
+        return topicArrayLength;
+    }
+
+    public void setTopicArrayLength(Field topicArrayLength) {
+        this.topicArrayLength = topicArrayLength;
+    }
+
+    public TopicItem[] getTopicArray() {
+        return topicArray;
+    }
+
+    public void setTopicArray(TopicItem[] topicArray) {
+        this.topicArray = topicArray;
+    }
+
+    public Field getTagBuffer() {
+        return tagBuffer;
+    }
+
+    public void setTagBuffer(Field tagBuffer) {
+        this.tagBuffer = tagBuffer;
+    }
+
     public static class TopicItem {
         private Field topicNameLength;
         private Field topicName;
@@ -89,60 +144,5 @@ public class ProduceRequestV11 extends BaseRequestBody {
         public void setTagBuffer(Field tagBuffer) {
             this.tagBuffer = tagBuffer;
         }
-    }
-
-    private Field transactionalId;
-    private Field requiredAcks;
-    private Field timeout;
-    private Field topicArrayLength;
-    private TopicItem[] topicArray;
-    private Field tagBuffer;
-
-    public Field getTransactionalId() {
-        return transactionalId;
-    }
-
-    public void setTransactionalId(Field transactionalId) {
-        this.transactionalId = transactionalId;
-    }
-
-    public Field getRequiredAcks() {
-        return requiredAcks;
-    }
-
-    public void setRequiredAcks(Field requiredAcks) {
-        this.requiredAcks = requiredAcks;
-    }
-
-    public Field getTimeout() {
-        return timeout;
-    }
-
-    public void setTimeout(Field timeout) {
-        this.timeout = timeout;
-    }
-
-    public Field getTopicArrayLength() {
-        return topicArrayLength;
-    }
-
-    public void setTopicArrayLength(Field topicArrayLength) {
-        this.topicArrayLength = topicArrayLength;
-    }
-
-    public TopicItem[] getTopicArray() {
-        return topicArray;
-    }
-
-    public void setTopicArray(TopicItem[] topicArray) {
-        this.topicArray = topicArray;
-    }
-
-    public Field getTagBuffer() {
-        return tagBuffer;
-    }
-
-    public void setTagBuffer(Field tagBuffer) {
-        this.tagBuffer = tagBuffer;
     }
 }

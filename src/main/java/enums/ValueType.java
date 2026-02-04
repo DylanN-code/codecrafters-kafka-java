@@ -7,6 +7,10 @@ public enum ValueType {
 
     private final byte type;
 
+    ValueType(byte type) {
+        this.type = type;
+    }
+
     public static ValueType ofType(byte b) {
         for (ValueType v : values()) {
             if (b == v.type) {
@@ -14,10 +18,6 @@ public enum ValueType {
             }
         }
         throw new RuntimeException("invalid value type");
-    }
-
-    ValueType(byte type) {
-        this.type = type;
     }
 
     public byte getType() {

@@ -95,7 +95,7 @@ public class FieldUtil {
     public static Field getRecordId(byte[] partitionIdStream, byte[] topicIdStream) {
         int partitionIdStreamLength = partitionIdStream.length;
         int topicIdStreamLength = topicIdStream.length;
-        int recordIdStreamLength = partitionIdStreamLength+topicIdStreamLength;
+        int recordIdStreamLength = partitionIdStreamLength + topicIdStreamLength;
         byte[] recordIdStream = new byte[recordIdStreamLength];
         System.arraycopy(partitionIdStream, 0, recordIdStream, 0, partitionIdStreamLength);
         System.arraycopy(topicIdStream, 0, recordIdStream, partitionIdStreamLength, topicIdStreamLength);

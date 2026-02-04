@@ -80,7 +80,7 @@ public enum ApiKey {
     }
 
     public static ApiKey fromKey(Short key) {
-        for (ApiKey apiKey: values()) {
+        for (ApiKey apiKey : values()) {
             if (Objects.equals(key, apiKey.getKey())) {
                 return apiKey;
             }

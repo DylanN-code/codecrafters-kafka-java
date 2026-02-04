@@ -33,7 +33,7 @@ public class PartitionValueImpl extends BaseLogValueService<PartitionValue> {
             value.setReplicaArray(null);
         } else {
             LinkedList<Field> replicaArray = new LinkedList<>();
-            for (int i=0; i<replicaArrayLength; i++) {
+            for (int i = 0; i < replicaArrayLength; i++) {
                 replicaArray.add(BrokerUtil.wrapField(is, FieldType.INTEGER));
             }
             value.setReplicaArray(replicaArray);
@@ -45,7 +45,7 @@ public class PartitionValueImpl extends BaseLogValueService<PartitionValue> {
             value.setInSyncReplicaArray(null);
         } else {
             LinkedList<Field> inSyncReplicaArray = new LinkedList<>();
-            for (int i=0; i<inSyncReplicaArrayLength; i++) {
+            for (int i = 0; i < inSyncReplicaArrayLength; i++) {
                 inSyncReplicaArray.add(BrokerUtil.wrapField(is, FieldType.INTEGER));
             }
             value.setInSyncReplicaArray(inSyncReplicaArray);
@@ -63,7 +63,7 @@ public class PartitionValueImpl extends BaseLogValueService<PartitionValue> {
             value.setDirectoryArray(null);
         } else {
             LinkedList<Field> directoryArray = new LinkedList<>();
-            for (int i=0; i<directoryArrayLength; i++) {
+            for (int i = 0; i < directoryArrayLength; i++) {
                 directoryArray.add(BrokerUtil.wrapField(is, FieldType.STRING, Constant.TOPIC_ID_LENGTH));
             }
             value.setDirectoryArray(directoryArray);

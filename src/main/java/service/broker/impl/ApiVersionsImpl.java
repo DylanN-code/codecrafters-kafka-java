@@ -54,7 +54,7 @@ public class ApiVersionsImpl extends BaseBrokerService<ApiVersionsRequestBodyV4,
         responseBodyV4.setApiKeyCounts(FieldUtil.getApiKeyCount((byte) (SUPPORTED_APIS.size() + FieldType.BYTE.getByteSize())));
 
         List<ApiVersionsResponseBodyV4.Item> itemList = new ArrayList<>();
-        for (ApiKey apiKey: SUPPORTED_APIS) {
+        for (ApiKey apiKey : SUPPORTED_APIS) {
             ApiVersionsResponseBodyV4.Item item = new ApiVersionsResponseBodyV4.Item();
             item.setApiKey(BrokerUtil.wrapField(ByteUtil.convertShortToStream(apiKey.getKey()), FieldType.SHORT));
             item.setApiMinVersion(BrokerUtil.wrapField(ByteUtil.convertShortToStream(apiKey.getMinVersion()), FieldType.SHORT));
@@ -75,7 +75,7 @@ public class ApiVersionsImpl extends BaseBrokerService<ApiVersionsRequestBodyV4,
         fieldLinkedList.add(requestHeader.getCorrelationId());
         fieldLinkedList.add(responseBody.getErrorCode());
         fieldLinkedList.add(responseBody.getApiKeyCounts());
-        for (ApiVersionsResponseBodyV4.Item item: responseBody.getApiVersionList()) {
+        for (ApiVersionsResponseBodyV4.Item item : responseBody.getApiVersionList()) {
             fieldLinkedList.add(item.getApiKey());
             fieldLinkedList.add(item.getApiMinVersion());
             fieldLinkedList.add(item.getApiMaxVersion());

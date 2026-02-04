@@ -9,7 +9,7 @@ public class Constant {
     public static final Integer THROTTLE_TIME_MS = 0;
     public static final Byte TAGGED_FIELD_SIZE = Integer.valueOf(0).byteValue();
     public static final Integer GRACE_PERIOD_BETWEEN_REQUEST_HANDLING = 100;
-    public static final byte[] DEFAULT_TOPIC_ID = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+    public static final byte[] DEFAULT_TOPIC_ID = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
     public static final Byte DEFAULT_IS_INTERNAL = 0;
     public static final Byte DEFAULT_PARTITION_ARRAY_LENGTH = 1;
     public static final Integer DEFAULT_TOPIC_AUTHORIZED_OPERATIONS = 0;

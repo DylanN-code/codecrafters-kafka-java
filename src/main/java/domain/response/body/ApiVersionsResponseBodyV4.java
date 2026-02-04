@@ -5,45 +5,6 @@ import domain.Field;
 import java.util.List;
 
 public class ApiVersionsResponseBodyV4 extends BaseResponseBody {
-    public static class Item {
-        private Field apiKey;
-        private Field apiMinVersion;
-        private Field apiMaxVersion;
-        private Field taggedFieldSize;
-
-        public Field getApiKey() {
-            return apiKey;
-        }
-
-        public void setApiKey(Field apiKey) {
-            this.apiKey = apiKey;
-        }
-
-        public Field getApiMinVersion() {
-            return apiMinVersion;
-        }
-
-        public void setApiMinVersion(Field apiMinVersion) {
-            this.apiMinVersion = apiMinVersion;
-        }
-
-        public Field getApiMaxVersion() {
-            return apiMaxVersion;
-        }
-
-        public void setApiMaxVersion(Field apiMaxVersion) {
-            this.apiMaxVersion = apiMaxVersion;
-        }
-
-        public Field getTaggedFieldSize() {
-            return taggedFieldSize;
-        }
-
-        public void setTaggedFieldSize(Field taggedFieldSize) {
-            this.taggedFieldSize = taggedFieldSize;
-        }
-    }
-
     private Field errorCode;
     private Field apiKeyCounts;
     private List<Item> apiVersionList;
@@ -88,5 +49,44 @@ public class ApiVersionsResponseBodyV4 extends BaseResponseBody {
 
     public void setTaggedFieldSize(Field taggedFieldSize) {
         this.taggedFieldSize = taggedFieldSize;
+    }
+
+    public static class Item {
+        private Field apiKey;
+        private Field apiMinVersion;
+        private Field apiMaxVersion;
+        private Field taggedFieldSize;
+
+        public Field getApiKey() {
+            return apiKey;
+        }
+
+        public void setApiKey(Field apiKey) {
+            this.apiKey = apiKey;
+        }
+
+        public Field getApiMinVersion() {
+            return apiMinVersion;
+        }
+
+        public void setApiMinVersion(Field apiMinVersion) {
+            this.apiMinVersion = apiMinVersion;
+        }
+
+        public Field getApiMaxVersion() {
+            return apiMaxVersion;
+        }
+
+        public void setApiMaxVersion(Field apiMaxVersion) {
+            this.apiMaxVersion = apiMaxVersion;
+        }
+
+        public Field getTaggedFieldSize() {
+            return taggedFieldSize;
+        }
+
+        public void setTaggedFieldSize(Field taggedFieldSize) {
+            this.taggedFieldSize = taggedFieldSize;
+        }
     }
 }

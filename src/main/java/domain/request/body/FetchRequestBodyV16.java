@@ -5,6 +5,124 @@ import domain.Field;
 import java.util.List;
 
 public class FetchRequestBodyV16 extends BaseRequestBody {
+    private Field maxWaitMS;
+    private Field minBytes;
+    private Field maxBytes;
+    private Field isolationLevel;
+    private Field sessionId;
+    private Field sessionEpoch;
+    private Field topicLength;
+    private List<TopicItem> topicItemList;
+    private Field forgottenTopicDataLength;
+    private List<ForgottenTopic> forgottenTopicList;
+    private Field rackIdLength;
+    private Field rackId;
+    private Field tagBuffer;
+
+    public Field getMaxWaitMS() {
+        return maxWaitMS;
+    }
+
+    public void setMaxWaitMS(Field maxWaitMS) {
+        this.maxWaitMS = maxWaitMS;
+    }
+
+    public Field getMinBytes() {
+        return minBytes;
+    }
+
+    public void setMinBytes(Field minBytes) {
+        this.minBytes = minBytes;
+    }
+
+    public Field getMaxBytes() {
+        return maxBytes;
+    }
+
+    public void setMaxBytes(Field maxBytes) {
+        this.maxBytes = maxBytes;
+    }
+
+    public Field getIsolationLevel() {
+        return isolationLevel;
+    }
+
+    public void setIsolationLevel(Field isolationLevel) {
+        this.isolationLevel = isolationLevel;
+    }
+
+    public Field getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(Field sessionId) {
+        this.sessionId = sessionId;
+    }
+
+    public Field getSessionEpoch() {
+        return sessionEpoch;
+    }
+
+    public void setSessionEpoch(Field sessionEpoch) {
+        this.sessionEpoch = sessionEpoch;
+    }
+
+    public Field getTopicLength() {
+        return topicLength;
+    }
+
+    public void setTopicLength(Field topicLength) {
+        this.topicLength = topicLength;
+    }
+
+    public List<TopicItem> getTopicItemList() {
+        return topicItemList;
+    }
+
+    public void setTopicItemList(List<TopicItem> topicItemList) {
+        this.topicItemList = topicItemList;
+    }
+
+    public Field getForgottenTopicDataLength() {
+        return forgottenTopicDataLength;
+    }
+
+    public void setForgottenTopicDataLength(Field forgottenTopicDataLength) {
+        this.forgottenTopicDataLength = forgottenTopicDataLength;
+    }
+
+    public List<ForgottenTopic> getForgottenTopicList() {
+        return forgottenTopicList;
+    }
+
+    public void setForgottenTopicList(List<ForgottenTopic> forgottenTopicList) {
+        this.forgottenTopicList = forgottenTopicList;
+    }
+
+    public Field getRackIdLength() {
+        return rackIdLength;
+    }
+
+    public void setRackIdLength(Field rackIdLength) {
+        this.rackIdLength = rackIdLength;
+    }
+
+    public Field getRackId() {
+        return rackId;
+    }
+
+    public void setRackId(Field rackId) {
+        this.rackId = rackId;
+    }
+
+    public Field getTagBuffer() {
+        return tagBuffer;
+    }
+
+    public void setTagBuffer(Field tagBuffer) {
+        this.tagBuffer = tagBuffer;
+    }
+
     public static class TopicItem {
         private Field topicId;
         private Field partitionLength;
@@ -147,123 +265,5 @@ public class FetchRequestBodyV16 extends BaseRequestBody {
         public void setTagBuffer(Field tagBuffer) {
             this.tagBuffer = tagBuffer;
         }
-    }
-
-    private Field maxWaitMS;
-    private Field minBytes;
-    private Field maxBytes;
-    private Field isolationLevel;
-    private Field sessionId;
-    private Field sessionEpoch;
-    private Field topicLength;
-    private List<TopicItem> topicItemList;
-    private Field forgottenTopicDataLength;
-    private List<ForgottenTopic> forgottenTopicList;
-    private Field rackIdLength;
-    private Field rackId;
-    private Field tagBuffer;
-
-    public Field getMaxWaitMS() {
-        return maxWaitMS;
-    }
-
-    public void setMaxWaitMS(Field maxWaitMS) {
-        this.maxWaitMS = maxWaitMS;
-    }
-
-    public Field getMinBytes() {
-        return minBytes;
-    }
-
-    public void setMinBytes(Field minBytes) {
-        this.minBytes = minBytes;
-    }
-
-    public Field getMaxBytes() {
-        return maxBytes;
-    }
-
-    public void setMaxBytes(Field maxBytes) {
-        this.maxBytes = maxBytes;
-    }
-
-    public Field getIsolationLevel() {
-        return isolationLevel;
-    }
-
-    public void setIsolationLevel(Field isolationLevel) {
-        this.isolationLevel = isolationLevel;
-    }
-
-    public Field getSessionId() {
-        return sessionId;
-    }
-
-    public void setSessionId(Field sessionId) {
-        this.sessionId = sessionId;
-    }
-
-    public Field getSessionEpoch() {
-        return sessionEpoch;
-    }
-
-    public void setSessionEpoch(Field sessionEpoch) {
-        this.sessionEpoch = sessionEpoch;
-    }
-
-    public Field getTopicLength() {
-        return topicLength;
-    }
-
-    public void setTopicLength(Field topicLength) {
-        this.topicLength = topicLength;
-    }
-
-    public List<TopicItem> getTopicItemList() {
-        return topicItemList;
-    }
-
-    public void setTopicItemList(List<TopicItem> topicItemList) {
-        this.topicItemList = topicItemList;
-    }
-
-    public Field getForgottenTopicDataLength() {
-        return forgottenTopicDataLength;
-    }
-
-    public void setForgottenTopicDataLength(Field forgottenTopicDataLength) {
-        this.forgottenTopicDataLength = forgottenTopicDataLength;
-    }
-
-    public List<ForgottenTopic> getForgottenTopicList() {
-        return forgottenTopicList;
-    }
-
-    public void setForgottenTopicList(List<ForgottenTopic> forgottenTopicList) {
-        this.forgottenTopicList = forgottenTopicList;
-    }
-
-    public Field getRackIdLength() {
-        return rackIdLength;
-    }
-
-    public void setRackIdLength(Field rackIdLength) {
-        this.rackIdLength = rackIdLength;
-    }
-
-    public Field getRackId() {
-        return rackId;
-    }
-
-    public void setRackId(Field rackId) {
-        this.rackId = rackId;
-    }
-
-    public Field getTagBuffer() {
-        return tagBuffer;
-    }
-
-    public void setTagBuffer(Field tagBuffer) {
-        this.tagBuffer = tagBuffer;
     }
 }
